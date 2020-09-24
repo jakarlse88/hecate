@@ -1,0 +1,52 @@
+{
+    "Routes": [
+      {
+        "RouteClaimsRequirement": {
+          "Role": "admin"
+        },
+        "DownstreamPathTemplate": "/api/ping/protected",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "localhost",
+            "Port": 5002
+          }
+        ],
+        "UpstreamPathTemplate": "/hecate/ping",
+        "UpstreamHttpMethod": [
+          "GET"
+        ]
+      },
+      {
+        "DownstreamPathTemplate": "/api/ping/unprotected",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "localhost",
+            "Port": 5002
+          }
+        ],
+        "UpstreamPathTemplate": "/hecate/ping",
+        "UpstreamHttpMethod": [
+          "GET"
+        ]
+      }
+        {
+            "DownstreamPathTemplate": "/api/technique?name={techniqueName}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 5002
+                }
+            ],
+            "UpstreamPathTemplate": "/hecate/technique?name={techniqueName}",
+            "UpstreamHttpMethod": [
+                "GET"
+            ]
+        }
+    ],
+    "GlobalConfiguration": {
+        "BaseUrl": "http://localhost:5001/"
+    }
+}
