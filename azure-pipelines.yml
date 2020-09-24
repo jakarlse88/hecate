@@ -1,0 +1,42 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+
+stages:
+
+- stage: Test
+  displayName: Run tests
+  jobs:
+  - job: Test
+    displayName: Test
+    steps:
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'test'
+        projects: '**/test/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
+        testRunTitle: 'Test'
+
+- stage: BuildAndPush
+  displayName: Build and push image
+  jobs:
+  - job: BuildAndPush
+    displayName: Build and push image
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: 'jakarlse88/hecate'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        tags: |
+          $(Build.BuildId)
+          latest
